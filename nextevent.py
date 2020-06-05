@@ -8,6 +8,7 @@ import cairo
 import math
 import os
 import ssl
+import sys
 
 def secs_to_string(s, days):
     hours = int(s / 3600)
@@ -140,7 +141,10 @@ class MyWindow(Gtk.Window):
                 time.sleep(10)
         print("Exiting polling thread")
 
-
+if sys.version_info.major < 3:
+    print("Must be run with python 3")
+    exit()
+        
 win = MyWindow()
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
