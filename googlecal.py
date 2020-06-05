@@ -20,7 +20,7 @@ class GoogleCalendar:
         # time.
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
-                creds = pickle.load(token)#, encoding='latin1') # Python 3
+                creds = pickle.load(token, encoding='latin1') # Python 3
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
