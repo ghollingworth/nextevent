@@ -68,7 +68,7 @@ class MyWindow(Gtk.Window):
 
 
     def OnDraw(self, w, cr):
-        in_order = sorted(self.events, key = lambda i : i['start'])
+        in_order = sorted(self.events, key = lambda i : i['start'].timestamp())
         
         self.handleState(in_order)
                 
