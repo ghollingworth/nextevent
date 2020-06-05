@@ -50,6 +50,7 @@ class MyWindow(Gtk.Window):
         self.FONT_SIZE = 20
         
     def handleState(self, evs):
+        red = False
         for ev in evs:
             diff = ev["start"] - datetime.datetime.now(ev["start"].tzinfo)
             
@@ -66,17 +67,22 @@ class MyWindow(Gtk.Window):
                 os.system("aplay ding.wav")
                 os.system("aplay ding.wav")
                 ev["state"] = 3
-
+            if ev["state"] != 0:
+                red = True
+        return red
 
     def OnDraw(self, w, cr):
         in_order = sorted(self.events, key = lambda i : i['start'].timestamp())
         
-        self.handleState(in_order)
+        red = self.handleState(in_order)
                 
         width = w.get_allocated_width()
         height = w.get_allocated_height()
         
-        cr.set_source_rgb(0,0.9,0)
+        if red:
+           cr.set_source_rgb(1.0,0.4,0.4)
+        else:
+            cr.set_source_rgb(0.3,0.8,0.9)
         cr.rectangle(0, 0, width, height)
         cr.fill_preserve()
         
@@ -100,13 +106,16 @@ class MyWindow(Gtk.Window):
             
         for i in range(len(in_order)):
             if in_order[i]["state"] != 0:
-                cr.set_source_rgb(1.0,0,0)
+                cr.set_source_rgb(1.0,1.0,0)
             else:
                 cr.set_source_rgb(0,0,0)
                 
             offset = first_offset_v + (vertical_dist * i)
             diff = in_order[i]["start"] - datetime.datetime.now(in_order[i]["start"].tzinfo)
-            diff_str = secs_to_string(diff.seconds, diff.days)
+            if in_order[i]["state"] == 3:
+                diff_str = "In progress"
+            else:
+                diff_str = secs_to_string(diff.seconds, diff.days)
             cr.move_to(first_offset_h, offset)
             cr.show_text(diff_str)
             cr.move_to(first_offset_h + time_width, offset)
