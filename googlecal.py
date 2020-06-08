@@ -1,9 +1,6 @@
-from __future__ import print_function
 import datetime
-from dateutil.parser import *
 import pickle
 import os.path
-import time
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -11,6 +8,7 @@ from google.auth.transport.requests import Request
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
+# Simple class to get next five events from a calendar
 class GoogleCalendar:
     
     def __init__(self):
